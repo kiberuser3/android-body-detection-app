@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android Body Detection App</string>
+    <string name="hello_string">Hello</string>
+    <string name="start_button_title">Start</string>
+    <string name="second_fragment_string">Businasslady?</string>
+    <string name="second_fragment_button">Yes!</string>
+</resources>
