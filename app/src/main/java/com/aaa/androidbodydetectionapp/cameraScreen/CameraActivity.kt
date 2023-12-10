@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -12,7 +13,7 @@ import androidx.core.content.ContextCompat
 import com.aaa.androidbodydetectionapp.R
 import com.google.common.util.concurrent.ListenableFuture
 
-class CameraActivity: AppCompatActivity() {
+@ExperimentalGetImage class CameraActivity: AppCompatActivity() {
     private lateinit var cameraFuture: ListenableFuture<ProcessCameraProvider>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,8 @@ class CameraActivity: AppCompatActivity() {
         var cameraSelector = CameraSelector.Builder()
             .requireLensFacing(CameraSelector.LENS_FACING_BACK)
             .build()
-        val peremena = FrameAnalyzer()
+        val skeletView = findViewById<SkeletView>(R.id.skelet_view)
+        val peremena = FrameAnalyzer(skeletView)
         val collector = ImageAnalysis.Builder()
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
