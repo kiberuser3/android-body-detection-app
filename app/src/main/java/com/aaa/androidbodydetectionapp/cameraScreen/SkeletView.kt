@@ -33,6 +33,7 @@ class SkeletView(context: Context, attributes: AttributeSet): View(context, attr
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         drawLandmarks(canvas)
+        drawLines(canvas)
     }
 
     fun setParametres(pose: Pose, size: Size) {
@@ -42,13 +43,34 @@ class SkeletView(context: Context, attributes: AttributeSet): View(context, attr
     }
 
     private fun drawLandmarks(canvas: Canvas) {
-        val noseLandmark = drawingPose?.getPoseLandmark(PoseLandmark.NOSE)
-        if(noseLandmark != null) {
-            convertPosition(noseLandmark.position3D)
-            val newPoint = convertPosition(noseLandmark.position3D)
-            canvas.drawCircle(newPoint.x , newPoint.y, 15F, mainPaint)
+        drawLandmark(canvas, drawingPose?.getPoseLandmark(PoseLandmark.NOSE))
+        drawLandmark(canvas, drawingPose?.getPoseLandmark(PoseLandmark.RIGHT_EYE))
+    }
+
+
+    private fun drawLandmark(canvas: Canvas, poseLandmark: PoseLandmark?) {
+        if(poseLandmark != null) {
+            val newPoint = convertPosition(poseLandmark.position3D)
+            canvas.drawCircle(newPoint.x, newPoint.y, 15F, mainPaint)
         }
     }
+
+
+    private fun drawLines(canvas: Canvas) {
+        val firstLandmark = drawingPose?.getPoseLandmark(PoseLandmark.LEFT_ELBOW)
+        val secondLandmark = drawingPose?.getPoseLandmark(PoseLandmark.LEFT_WRIST)
+        drawLine(canvas, firstLandmark, secondLandmark)
+    }
+
+
+    private fun drawLine(canvas: Canvas, firstLandmark: PoseLandmark?, secondLandmark: PoseLandmark?) {
+        if(firstLandmark != null && secondLandmark != null) {
+            val startingPoint: PointF = convertPosition(firstLandmark.position3D)
+            val finishingPoint: PointF = convertPosition(secondLandmark.position3D)
+                canvas.drawLine(startingPoint.x, startingPoint.y, finishingPoint.x, finishingPoint.y, mainPaint)
+        }
+    }
+
 
     private fun convertPosition(startingPoint: PointF3D): PointF {
         val x1 = startingPoint.x
